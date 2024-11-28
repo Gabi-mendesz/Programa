@@ -1,0 +1,104 @@
+package br.edu.ifs.tecinf.poo;
+
+import br.edu.ifs.tecinf.poo.util.ListaEquipamento;
+import br.edu.ifs.tecinf.poo.util.ListaPessoa;
+
+import java.util.Scanner;
+
+public class Principal {
+    static Scanner teclado = new Scanner(System.in);
+    static ListaPessoa listaPessoa = new ListaPessoa();
+
+    public static void main(String[] args){
+
+        int opcao = 99;
+        do {
+            System.out.println("1 - ...");
+            System.out.println("2 - ...");
+            System.out.println("3 - ...");
+            System.out.println("4 - Gerenciar as pessoas da escola");
+            System.out.println("Escolha uma opção...:");
+            opcao = teclado.nextInt();
+            switch (opcao){
+                case 4:{
+                    mostrarMenuGerenciarPessoas();
+                    break;
+                }
+                case 99:{
+                    System.out.println("Ok, até logo.");
+                    break;
+                }
+                default: {
+                    System.out.println("Escolha uma opção válida ou 99 para sair");
+                    break;
+                }
+            }
+        } while (opcao != 99);
+
+
+
+
+    }
+
+    private static void mostrarMenuGerenciarPessoas() {
+        int opcao = 99;
+        do {
+            System.out.println("1 - Novo");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Alterar");
+            System.out.println("4 - Excluir");
+            System.out.println("5 - Sair");
+            System.out.println("Informe uma opção ou 5 para sair");
+            opcao = teclado.nextInt();
+            switch (opcao){
+                case 1:{
+                    System.out.println("Cadastro de pessoas...\n");
+                    System.out.println("Informe o Nome\n");
+                    String nome = teclado.next();
+                    Pessoa p = null;
+                    System.out.println("Informe: 1 - Visitante; 2 - Aluno; 3 - Professor; 4 - Professor Prático\n");
+                    int tipoPessoa = teclado.nextInt();
+                    switch (tipoPessoa){
+                        case 2:{
+                            p = new Aluno(nome);
+                            break;
+                        }
+                        case 3: {
+                            p = new Professor(nome);
+                            break;
+                        }
+                        case 4: {
+                            p = new ProfessorPratico(nome);
+                            break;
+                        }
+                        default:{
+                            p = new Visitante(nome);
+                            break;
+                        }
+                    }
+                    listaPessoa.adicionar(p);
+                    break;
+                }
+                case 2: {
+                    System.out.println("Lista de pessoas...\n");
+                    System.out.println("Nome - Tipo da pessoa\n");
+                    for( int i = 0; i < listaPessoa.getQtdPessoasNaLista(); i++ ){
+                        Pessoa p = listaPessoa.get(i);
+                        String tipoPessoa = "";
+                        if (p instanceof Aluno ) {
+                            tipoPessoa = "Aluno";
+                        }else if ( p instanceof Visitante){
+                            tipoPessoa = "Visitante";
+                        } else if (p instanceof ProfessorPratico) {
+                            tipoPessoa = "Professor Pratico";
+                        } else if (p instanceof Professor) {
+                            tipoPessoa = "Professor";
+                        }
+                        System.out.println(p.getNome() + " - " + tipoPessoa + "\n");
+                    }
+                    break;
+                }
+            }
+        } while (opcao != 5 );
+    }
+}
